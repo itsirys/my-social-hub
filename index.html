@@ -1,76 +1,385 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#17101f">
-<meta name="description" content="My Social Hub — your social links in one place.">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon-192.png">
-<title>My Social Hub</title>
-<style>
-:root{color-scheme:dark;--bg:#100b16;--panel:#1c1425;--panel2:#261a31;--text:#fff8ff;--muted:#c7b7d0;--pink:#e7a3d1;--purple:#b79aff;--line:#493451}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:radial-gradient(ellipse at 15% 0%,#382044 0,transparent 42%),radial-gradient(ellipse at 95% 20%,#30204b 0,transparent 35%),var(--bg)}
-main{width:min(760px,100%);margin:auto;padding:24px 18px calc(36px + env(safe-area-inset-bottom))}
-header{text-align:center;padding:20px 8px 24px}.sigil{font-size:35px;filter:drop-shadow(0 0 12px #b79aff66)}h1{font-size:clamp(27px,7vw,39px);margin:7px 0 5px;letter-spacing:.3px}.sub{color:var(--muted);font-size:14px}.quote{display:inline-block;margin-top:15px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:#f2c9e6;font-size:12px;letter-spacing:1px}
-.tools{display:flex;gap:10px;margin:0 0 18px}.search{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;font:inherit;outline:none}.search:focus{border-color:var(--pink)}.edit{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:0 15px;border-radius:14px;font-weight:650}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{display:flex;align-items:center;gap:13px;min-height:91px;padding:15px;background:linear-gradient(145deg,#261a31,#1a1322);border:1px solid var(--line);border-radius:19px;text-decoration:none;color:inherit;box-shadow:0 8px 22px #0002;transition:transform .15s,border-color .15s}.tile:active{transform:scale(.98)}.tile:hover{border-color:#a777ad}.icon{width:49px;height:49px;border-radius:15px;display:grid;place-items:center;font-size:25px;flex-shrink:0;background:#ffffff12}.label{font-weight:700;font-size:15px}.hint{font-size:11px;color:var(--muted);margin-top:3px}.arrow{margin-left:auto;color:#cbb2db;font-size:19px}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:23px 8px 0;line-height:1.6}.note{background:#1b1423;border:1px solid var(--line);padding:12px 14px;border-radius:14px;margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}
-dialog{width:min(440px,calc(100% - 28px));border:1px solid var(--line);border-radius:20px;background:#1b1423;color:var(--text);padding:20px}dialog::backdrop{background:#050309bb}dialog h2{margin-top:0}.field{display:block;width:100%;margin:7px 0 14px;padding:11px;border-radius:10px;border:1px solid var(--line);background:#100b16;color:var(--text);font:inherit}.actions{display:flex;gap:10px}.actions button{flex:1;padding:11px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-weight:650}.actions .save{background:#6c3b76;border-color:#9c68a6}
-@media(min-width:560px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tile{display:block;text-align:center;padding:20px 10px}.icon{margin:0 auto 10px;width:58px;height:58px;font-size:29px}.arrow{display:none}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#030B1F">
+  <meta name="description" content="My Social Hub — all your favorite socials in one cosmic place.">
+  <title>My Social Hub ✦</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <style>
+    :root {
+      --bg: #030B1F;
+      --panel: #0A1A3A;
+      --violet: #4C3BFF;
+      --purple: #8A5CFF;
+      --moon: #C7D3FF;
+      --white: #F5F6FF;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--white);
+      font-family: system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(ellipse at 15% 5%, #2935a844, transparent 38%),
+        radial-gradient(ellipse at 90% 40%, #7c3cff25, transparent 35%),
+        radial-gradient(ellipse at 45% 100%, #164e9a35, transparent 40%),
+        var(--bg);
+      overflow-x: hidden;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .55;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, #fff 50%, transparent),
+        radial-gradient(1px 1px at 75% 20%, #c7d3ff 50%, transparent),
+        radial-gradient(2px 2px at 60% 70%, #fff 50%, transparent),
+        radial-gradient(1px 1px at 90% 85%, #b7a6ff 50%, transparent),
+        radial-gradient(1px 1px at 12% 80%, #fff 50%, transparent);
+      background-size: 240px 240px;
+      animation: twinkle 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: .25; }
+      to { opacity: .7; }
+    }
+
+    .wrap {
+      position: relative;
+      width: min(100% - 32px, 540px);
+      margin: auto;
+      padding: 35px 0 45px;
+    }
+
+    header { text-align: center; margin-bottom: 26px; }
+
+    .butterfly {
+      display: inline-block;
+      font-size: 54px;
+      filter: drop-shadow(0 0 18px #8a5cffaa);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-8px) rotate(4deg); }
+    }
+
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(28px, 7vw, 38px);
+      letter-spacing: 1px;
+      background: linear-gradient(100deg, #fff, #c7d3ff, #a68aff);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .subtitle { color: var(--moon); font-size: 14px; }
+    .motto { color: #a9a9ff; font-size: 12px; letter-spacing: 2px; margin-top: 14px; }
+
+    .section-title {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--moon);
+      margin: 28px 0 13px;
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .social {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 12px;
+      color: var(--white);
+      text-decoration: none;
+      border: 1px solid #8274ff45;
+      border-radius: 17px;
+      background: linear-gradient(135deg, #102348dd, #101432ee);
+      box-shadow: inset 0 1px #ffffff0b, 0 7px 22px #00000020;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+      animation: appear .5s both;
+    }
+
+    .social:active { transform: scale(.97); }
+    .social:hover {
+      transform: translateY(-3px);
+      border-color: var(--purple);
+      box-shadow: 0 0 20px #684aff35;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .social-icon {
+      flex: 0 0 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: linear-gradient(145deg, #4c3bff55, #8a5cff22);
+      border: 1px solid #a49aff33;
+      font-size: 22px;
+    }
+
+    .social-name { font-size: 14px; font-weight: 650; }
+    .social-note { color: #aebde6; font-size: 11px; margin-top: 3px; }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      color: white;
+      border: 1px solid #a79aff65;
+      border-radius: 13px;
+      padding: 12px 16px;
+      background: linear-gradient(110deg, #4433df, #8051dc);
+      box-shadow: 0 0 18px #6545ff2b;
+    }
+
+    .edit-button { width: 100%; margin-top: 20px; }
+    .secondary {
+      background: #101e40;
+      box-shadow: none;
+    }
+
+    .footer {
+      text-align: center;
+      color: #aab8df;
+      font-size: 12px;
+      margin-top: 28px;
+    }
+
+    dialog {
+      width: min(92%, 460px);
+      max-height: 85vh;
+      overflow-y: auto;
+      color: var(--white);
+      background: #08152e;
+      border: 1px solid #7d69ff80;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 0 50px #000b;
+    }
+
+    dialog::backdrop { background: #010511c9; }
+    dialog h2 { margin-top: 0; }
+
+    .field { display: block; margin: 15px 0; }
+    .field span { display: block; font-size: 13px; margin-bottom: 7px; }
+    .field input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #6574a8;
+      color: white;
+      background: #030b1f;
+      font-size: 14px;
+    }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+    .actions button { flex: 1; }
+
+    @media (max-width: 350px) {
+      .social-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<main>
-<header>
-<div class="sigil">♏ 🦋</div>
-<h1>My Social Hub</h1>
-<div class="sub">All your socials. One little universe.</div>
-<div class="quote">FAITH · INTUITION · GOOD ENERGY</div>
-</header>
-<div class="tools">
-<input class="search" id="search" type="search" placeholder="Search your socials…" aria-label="Search social links">
-<button class="edit" id="edit" type="button">Edit links</button>
-</div>
-<section class="grid" id="grid" aria-label="Social media shortcuts"></section>
-<div class="note">Tip: Tap a card to open that service. Use <b>Edit links</b> to add your own profile URLs. Your edits are saved only in this browser on this device.</div>
-<footer>Made with 🖤 and Scorpio energy<br>Some links may open in your browser instead of the social app.</footer>
-</main>
-<dialog id="dialog">
-<h2 id="dialogTitle">Edit social link</h2>
-<label for="serviceSelect">Choose a social platform</label>
-<select class="field" id="serviceSelect"></select>
-<label for="urlInput" id="urlLabel">Profile or website URL</label>
-<input class="field" id="urlInput" type="url" placeholder="https://…" inputmode="url">
-<div class="actions"><button type="button" id="cancel">Cancel</button><button type="button" class="save" id="save">Save link</button></div>
-</dialog>
-<script>
-const defaults=[
- {id:"facebook",name:"Facebook",emoji:"f",url:"https://www.facebook.com/",color:"#1877f2",hint:"Friends & updates"},
- {id:"messenger",name:"Messenger",emoji:"ϟ",url:"https://www.messenger.com/",color:"#8b5cf6",hint:"Chats & calls"},
- {id:"tiktok",name:"TikTok",emoji:"♪",url:"https://www.tiktok.com/",color:"#171717",hint:"Videos & trends"},
- {id:"instagram",name:"Instagram",emoji:"◎",url:"https://www.instagram.com/",color:"#c13584",hint:"Photos & stories"},
- {id:"x",name:"X",emoji:"𝕏",url:"https://x.com/",color:"#080808",hint:"Posts & conversations"},
- {id:"youtube",name:"YouTube",emoji:"▶",url:"https://www.youtube.com/",color:"#ff0033",hint:"Watch & listen"},
- {id:"threads",name:"Threads",emoji:"@",url:"https://www.threads.net/",color:"#39313f",hint:"Public conversations"},
- {id:"pinterest",name:"Pinterest",emoji:"p",url:"https://www.pinterest.com/",color:"#bd081c",hint:"Ideas & inspiration"}
-];
-let links=defaults.map(x=>({...x}));
-try{const saved=localStorage.getItem("mySocialHubLinks");if(saved){const data=JSON.parse(saved);links=links.map(x=>({...x,url:(data[x.id]&&safeUrl(data[x.id]))||x.url}))}}catch(e){}
-const grid=document.getElementById("grid"),search=document.getElementById("search"),dialog=document.getElementById("dialog"),urlInput=document.getElementById("urlInput");
-let editing="facebook";
-const serviceSelect=document.getElementById("serviceSelect");
-function safeUrl(value){try{const u=new URL(value);return ["https:","http:"].includes(u.protocol)?u.href:null}catch(e){return null}}
-function render(){const q=search.value.toLowerCase().trim();grid.innerHTML="";links.filter(x=>x.name.toLowerCase().includes(q)||x.hint.toLowerCase().includes(q)).forEach(x=>{const a=document.createElement("a");a.className="tile";a.href=x.url;a.target="_blank";a.rel="noopener noreferrer";a.innerHTML=`<span class="icon" style="background:${x.color};color:white">${x.emoji}</span><span><span class="label">${x.name}</span><div class="hint">${x.hint}</div></span><span class="arrow">↗</span>`;grid.appendChild(a)});if(!grid.children.length)grid.innerHTML='<p style="color:#c7b7d0">No social links found.</p>'}
-search.addEventListener("input",render);
-document.getElementById("edit").addEventListener("click",()=>{serviceSelect.innerHTML="";links.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.name;serviceSelect.appendChild(o)});editing=links[0].id;showEditor()});
-function showEditor(){const current=links.find(x=>x.id===editing);document.getElementById("dialogTitle").textContent="Edit "+current.name+" link";urlInput.value=current.url;dialog.showModal();urlInput.focus()}
-serviceSelect.addEventListener("change",()=>{editing=serviceSelect.value;showEditorRefresh()});
-function showEditorRefresh(){const current=links.find(x=>x.id===editing);document.getElementById("dialogTitle").textContent="Edit "+current.name+" link";urlInput.value=current.url;urlInput.setCustomValidity("")}
-document.getElementById("cancel").addEventListener("click",()=>dialog.close());
-document.getElementById("save").addEventListener("click",()=>{const value=safeUrl(urlInput.value.trim());if(!value){urlInput.setCustomValidity("Enter a valid URL beginning with https://");urlInput.reportValidity();return}urlInput.setCustomValidity("");const current=links.find(x=>x.id===editing);current.url=value;const saved={};links.forEach(x=>saved[x.id]=x.url);try{localStorage.setItem("mySocialHubLinks",JSON.stringify(saved))}catch(e){}dialog.close();render()});
-urlInput.addEventListener("input",()=>urlInput.setCustomValidity(""));
-render();
-if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
-</script>
-</body></html>
+  <div class="stars" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <header>
+      <div class="butterfly" aria-hidden="true">🦋</div>
+      <h1>My Social Hub</h1>
+      <div class="subtitle">Your universe, all in one place ✦</div>
+      <div class="motto">MIDNIGHT BLUE · COSMIC SOUL</div>
+    </header>
+
+    <div class="section-title">✦ EXPLORE MY UNIVERSE</div>
+    <section class="social-grid" id="socialGrid" aria-label="Social media links"></section>
+
+    <button class="edit-button" id="editButton" type="button">✦ Edit My Links</button>
+    <div class="footer">Made of stardust and a little mystery 💜</div>
+  </main>
+
+  <dialog id="editDialog">
+    <h2>✦ Edit My Links</h2>
+    <p class="subtitle">Paste your profile URL for each platform.</p>
+    <form id="linksForm">
+      <div id="linkFields"></div>
+      <div class="actions">
+        <button type="submit">Save Links</button>
+        <button class="secondary" id="cancelButton" type="button">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    const platforms = [
+      { id: "facebook", name: "Facebook", icon: "📘" },
+      { id: "messenger", name: "Messenger", icon: "💬" },
+      { id: "tiktok", name: "TikTok", icon: "🎵" },
+      { id: "instagram", name: "Instagram", icon: "📸" },
+      { id: "x", name: "X", icon: "𝕏" },
+      { id: "youtube", name: "YouTube", icon: "▶️" },
+      { id: "threads", name: "Threads", icon: "🧵" },
+      { id: "pinterest", name: "Pinterest", icon: "📌" }
+    ];
+
+    const storageKey = "mySocialHubLinksV2";
+    const grid = document.getElementById("socialGrid");
+    const dialog = document.getElementById("editDialog");
+    const fields = document.getElementById("linkFields");
+
+    function loadLinks() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        return Object.fromEntries(
+          platforms.map(p => [p.id, typeof saved[p.id] === "string" ? saved[p.id] : ""])
+        );
+      } catch {
+        return Object.fromEntries(platforms.map(p => [p.id, ""]));
+      }
+    }
+
+    let links = loadLinks();
+
+    function validUrl(value) {
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" || url.protocol === "http:";
+      } catch {
+        return false;
+      }
+    }
+
+    function renderLinks() {
+      grid.replaceChildren();
+
+      platforms.forEach((p, index) => {
+        const url = links[p.id];
+        const a = document.createElement("a");
+        a.className = "social";
+        a.style.animationDelay = `${index * 45}ms`;
+        a.href = validUrl(url) ? url : "#";
+        a.setAttribute("aria-label", p.name);
+
+        const icon = document.createElement("span");
+        icon.className = "social-icon";
+        icon.textContent = p.icon;
+
+        const info = document.createElement("span");
+        const name = document.createElement("div");
+        name.className = "social-name";
+        name.textContent = p.name;
+
+        const note = document.createElement("div");
+        note.className = "social-note";
+        note.textContent = validUrl(url) ? "Open profile ↗" : "Tap Edit My Links";
+
+        info.append(name, note);
+        a.append(icon, info);
+
+        a.addEventListener("click", event => {
+          if (!validUrl(links[p.id])) {
+            event.preventDefault();
+            openEditor();
+          } else {
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+          }
+        });
+
+        grid.append(a);
+      });
+    }
+
+    function openEditor() {
+      fields.replaceChildren();
+
+      platforms.forEach(p => {
+        const label = document.createElement("label");
+        label.className = "field";
+
+        const title = document.createElement("span");
+        title.textContent = `${p.icon} ${p.name}`;
+
+        const input = document.createElement("input");
+        input.type = "url";
+        input.inputMode = "url";
+        input.autocomplete = "url";
+        input.placeholder = "https://...";
+        input.value = links[p.id];
+        input.name = p.id;
+        input.setAttribute("aria-label", `${p.name} profile URL`);
+
+        label.append(title, input);
+        fields.append(label);
+      });
+
+      if (!dialog.open) dialog.showModal();
+    }
+
+    document.getElementById("editButton").addEventListener("click", openEditor);
+    document.getElementById("cancelButton").addEventListener("click", () => dialog.close());
+
+    document.getElementById("linksForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const updated = {};
+
+      for (const p of platforms) {
+        const value = String(formData.get(p.id) || "").trim();
+        if (value && !validUrl(value)) {
+          alert(`Please enter a valid http:// or https:// URL for ${p.name}.`);
+          return;
+        }
+        updated[p.id] = value;
+      }
+
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+        links = updated;
+        renderLinks();
+        dialog.close();
+      } catch {
+        alert("Your browser could not save the links. Please check your browser settings.");
+      }
+    });
+
+    renderLinks();
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
