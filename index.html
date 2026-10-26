@@ -176,9 +176,12 @@
     const formMessage = document.getElementById("formMessage");
     const hubUrl = "https://itsirys.github.io/my-social-hub/";
 
-    function validUrl(value) {
-      try { const url = new URL(value); return url.protocol === "https:" || url.protocol === "http:" || url.protocol === "mailto:"; }
-      catch { return false; }
+    function validUrl(value, platformId = "") {
+      try {
+        const url = new URL(value);
+        if (url.protocol === "https:" || url.protocol === "http:" || url.protocol === "mailto:") return true;
+        return platformId === "viber" && url.protocol === "viber:" && url.hostname === "chat";
+      } catch { return false; }
     }
     function loadLinks() {
       try {
@@ -198,15 +201,15 @@
       const url = normalizedUrl(p, links[p.id] || "");
       const a = document.createElement("a");
       a.className = "social";
-      a.href = validUrl(url) ? url : "#";
+      a.href = validUrl(url, p.id) ? url : "#";
       a.setAttribute("aria-label", p.name);
       const icon = document.createElement("span"); icon.className = "social-icon"; icon.textContent = p.icon;
       const name = document.createElement("span"); name.className = "social-name"; name.textContent = p.name;
       const note = document.createElement("span"); note.className = "social-note";
-      note.textContent = validUrl(url) ? "Open ↗" : "Add link";
+      note.textContent = validUrl(url, p.id) ? "Open ↗" : "Add link";
       a.append(icon, name, note);
       a.addEventListener("click", event => {
-        if (!validUrl(links[p.id])) { event.preventDefault(); openEditor(); }
+        if (!validUrl(links[p.id], p.id)) { event.preventDefault(); openEditor(); }
         else { a.target = "_blank"; a.rel = "noopener noreferrer"; }
       });
       return a;
@@ -223,7 +226,7 @@
     }
     function openMoreLinks() {
       moreList.replaceChildren();
-      const filled = extraPlatforms.filter(p => (links[p.id] || "").trim() && validUrl(normalizedUrl(p, links[p.id])));
+      const filled = extraPlatforms.filter(p => (links[p.id] || "").trim() && validUrl(normalizedUrl(p, links[p.id]), p.id));
       filled.forEach(p => moreList.append(makeCard(p, true)));
       moreEmpty.hidden = filled.length > 0;
       if (!moreDialog.open) moreDialog.showModal();
@@ -261,7 +264,7 @@
       const updated = {};
       for (const p of allPlatforms) {
         const value = String(data.get(p.id) || "").trim();
-        if (value && p.id !== "email" && p.id !== "businessGmail" && !validUrl(value)) {
+        if (value && p.id !== "email" && p.id !== "businessGmail" && !validUrl(value, p.id)) {
           formMessage.textContent = `Please enter a full http:// or https:// link for ${p.name}.`;
           return;
         }
