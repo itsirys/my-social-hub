@@ -10,13 +10,13 @@
   <link rel="icon" href="icon-192.png">
   <style>
     :root {
-      --bg: #030B1F;
-      --panel: #0A1A3A;
-      --violet: #4C3BFF;
-      --purple: #8A5CFF;
-      --moon: #C7D3FF;
-      --white: #F5F6FF;
-    }
+      --bg: #050C20;
+  --panel: #0D1B38;
+  --violet: #5550A8;
+  --purple: #8174BD;
+  --moon: #C7CBEA;
+  --white: #F1F2FA;
+}
 
     * { box-sizing: border-box; }
 
@@ -74,15 +74,24 @@
       50% { transform: translateY(-8px) rotate(4deg); }
     }
 
-    h1 {
-      margin: 10px 0 8px;
-      font-size: clamp(28px, 7vw, 38px);
-      letter-spacing: 1px;
-      background: linear-gradient(100deg, #fff, #c7d3ff, #a68aff);
-      color: transparent;
-      background-clip: text;
-      -webkit-background-clip: text;
-    }
+    .scorpio {
+  display: inline-block;
+  font-size: 0.62em;
+  color: #B9B0E8;
+  vertical-align: top;
+  margin-left: 5px;
+  text-shadow: none;
+}
+
+h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(28px, 7vw, 38px);
+  letter-spacing: 1px;
+  background: linear-gradient(100deg, #fff, #c7d3ff, #a68aff);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
 
     .subtitle { color: var(--moon); font-size: 14px; }
     .motto { color: #a9a9ff; font-size: 12px; letter-spacing: 2px; margin-top: 14px; }
@@ -111,13 +120,13 @@
       border: 1px solid #8274ff45;
       border-radius: 17px;
       background: linear-gradient(135deg, #102348dd, #101432ee);
-      box-shadow: inset 0 1px #ffffff0b, 0 7px 22px #00000020;
+      box-shadow: 0 4px 14px #00000020;
       transition: transform .2s, border-color .2s, box-shadow .2s;
       animation: appear .5s both;
     }
 
     .social:active { transform: scale(.97); }
-    .social:hover {
+    .box-shadow: 0 5px 16px #00000030;
       transform: translateY(-3px);
       border-color: var(--purple);
       box-shadow: 0 0 20px #684aff35;
@@ -214,7 +223,7 @@
 
   <main class="wrap">
     <header>
-      <div class="butterfly" aria-hidden="true">🦋</div>
+      <div class="butterfly" aria-label="Butterfly and Scorpio">🦋 <span class="scorpio">♏</span></div>
       <h1>My Social Hub</h1>
       <div class="subtitle">Your universe, all in one place ✦</div>
       <div class="motto">MIDNIGHT BLUE · COSMIC SOUL</div>
