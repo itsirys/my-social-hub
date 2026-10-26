@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17101f">
+<meta name="description" content="My Social Hub — your social links in one place.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<title>My Social Hub</title>
+<style>
+:root{color-scheme:dark;--bg:#100b16;--panel:#1c1425;--panel2:#261a31;--text:#fff8ff;--muted:#c7b7d0;--pink:#e7a3d1;--purple:#b79aff;--line:#493451}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:radial-gradient(ellipse at 15% 0%,#382044 0,transparent 42%),radial-gradient(ellipse at 95% 20%,#30204b 0,transparent 35%),var(--bg)}
+main{width:min(760px,100%);margin:auto;padding:24px 18px calc(36px + env(safe-area-inset-bottom))}
+header{text-align:center;padding:20px 8px 24px}.sigil{font-size:35px;filter:drop-shadow(0 0 12px #b79aff66)}h1{font-size:clamp(27px,7vw,39px);margin:7px 0 5px;letter-spacing:.3px}.sub{color:var(--muted);font-size:14px}.quote{display:inline-block;margin-top:15px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:#f2c9e6;font-size:12px;letter-spacing:1px}
+.tools{display:flex;gap:10px;margin:0 0 18px}.search{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;font:inherit;outline:none}.search:focus{border-color:var(--pink)}.edit{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:0 15px;border-radius:14px;font-weight:650}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{display:flex;align-items:center;gap:13px;min-height:91px;padding:15px;background:linear-gradient(145deg,#261a31,#1a1322);border:1px solid var(--line);border-radius:19px;text-decoration:none;color:inherit;box-shadow:0 8px 22px #0002;transition:transform .15s,border-color .15s}.tile:active{transform:scale(.98)}.tile:hover{border-color:#a777ad}.icon{width:49px;height:49px;border-radius:15px;display:grid;place-items:center;font-size:25px;flex-shrink:0;background:#ffffff12}.label{font-weight:700;font-size:15px}.hint{font-size:11px;color:var(--muted);margin-top:3px}.arrow{margin-left:auto;color:#cbb2db;font-size:19px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:23px 8px 0;line-height:1.6}.note{background:#1b1423;border:1px solid var(--line);padding:12px 14px;border-radius:14px;margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}
+dialog{width:min(440px,calc(100% - 28px));border:1px solid var(--line);border-radius:20px;background:#1b1423;color:var(--text);padding:20px}dialog::backdrop{background:#050309bb}dialog h2{margin-top:0}.field{display:block;width:100%;margin:7px 0 14px;padding:11px;border-radius:10px;border:1px solid var(--line);background:#100b16;color:var(--text);font:inherit}.actions{display:flex;gap:10px}.actions button{flex:1;padding:11px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-weight:650}.actions .save{background:#6c3b76;border-color:#9c68a6}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tile{display:block;text-align:center;padding:20px 10px}.icon{margin:0 auto 10px;width:58px;height:58px;font-size:29px}.arrow{display:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="sigil">♏ 🦋</div>
+<h1>My Social Hub</h1>
+<div class="sub">All your socials. One little universe.</div>
+<div class="quote">FAITH · INTUITION · GOOD ENERGY</div>
+</header>
+<div class="tools">
+<input class="search" id="search" type="search" placeholder="Search your socials…" aria-label="Search social links">
+<button class="edit" id="edit" type="button">Edit links</button>
+</div>
+<section class="grid" id="grid" aria-label="Social media shortcuts"></section>
+<div class="note">Tip: Tap a card to open that service. Use <b>Edit links</b> to add your own profile URLs. Your edits are saved only in this browser on this device.</div>
+<footer>Made with 🖤 and Scorpio energy<br>Some links may open in your browser instead of the social app.</footer>
+</main>
+<dialog id="dialog">
+<h2 id="dialogTitle">Edit social link</h2>
+<label for="serviceSelect">Choose a social platform</label>
+<select class="field" id="serviceSelect"></select>
+<label for="urlInput" id="urlLabel">Profile or website URL</label>
+<input class="field" id="urlInput" type="url" placeholder="https://…" inputmode="url">
+<div class="actions"><button type="button" id="cancel">Cancel</button><button type="button" class="save" id="save">Save link</button></div>
+</dialog>
+<script>
+const defaults=[
+ {id:"facebook",name:"Facebook",emoji:"f",url:"https://www.facebook.com/",color:"#1877f2",hint:"Friends & updates"},
+ {id:"messenger",name:"Messenger",emoji:"ϟ",url:"https://www.messenger.com/",color:"#8b5cf6",hint:"Chats & calls"},
+ {id:"tiktok",name:"TikTok",emoji:"♪",url:"https://www.tiktok.com/",color:"#171717",hint:"Videos & trends"},
+ {id:"instagram",name:"Instagram",emoji:"◎",url:"https://www.instagram.com/",color:"#c13584",hint:"Photos & stories"},
+ {id:"x",name:"X",emoji:"𝕏",url:"https://x.com/",color:"#080808",hint:"Posts & conversations"},
+ {id:"youtube",name:"YouTube",emoji:"▶",url:"https://www.youtube.com/",color:"#ff0033",hint:"Watch & listen"},
+ {id:"threads",name:"Threads",emoji:"@",url:"https://www.threads.net/",color:"#39313f",hint:"Public conversations"},
+ {id:"pinterest",name:"Pinterest",emoji:"p",url:"https://www.pinterest.com/",color:"#bd081c",hint:"Ideas & inspiration"}
+];
+let links=defaults.map(x=>({...x}));
+try{const saved=localStorage.getItem("mySocialHubLinks");if(saved){const data=JSON.parse(saved);links=links.map(x=>({...x,url:(data[x.id]&&safeUrl(data[x.id]))||x.url}))}}catch(e){}
+const grid=document.getElementById("grid"),search=document.getElementById("search"),dialog=document.getElementById("dialog"),urlInput=document.getElementById("urlInput");
+let editing="facebook";
+const serviceSelect=document.getElementById("serviceSelect");
+function safeUrl(value){try{const u=new URL(value);return ["https:","http:"].includes(u.protocol)?u.href:null}catch(e){return null}}
+function render(){const q=search.value.toLowerCase().trim();grid.innerHTML="";links.filter(x=>x.name.toLowerCase().includes(q)||x.hint.toLowerCase().includes(q)).forEach(x=>{const a=document.createElement("a");a.className="tile";a.href=x.url;a.target="_blank";a.rel="noopener noreferrer";a.innerHTML=`<span class="icon" style="background:${x.color};color:white">${x.emoji}</span><span><span class="label">${x.name}</span><div class="hint">${x.hint}</div></span><span class="arrow">↗</span>`;grid.appendChild(a)});if(!grid.children.length)grid.innerHTML='<p style="color:#c7b7d0">No social links found.</p>'}
+search.addEventListener("input",render);
+document.getElementById("edit").addEventListener("click",()=>{serviceSelect.innerHTML="";links.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.name;serviceSelect.appendChild(o)});editing=links[0].id;showEditor()});
+function showEditor(){const current=links.find(x=>x.id===editing);document.getElementById("dialogTitle").textContent="Edit "+current.name+" link";urlInput.value=current.url;dialog.showModal();urlInput.focus()}
+serviceSelect.addEventListener("change",()=>{editing=serviceSelect.value;showEditorRefresh()});
+function showEditorRefresh(){const current=links.find(x=>x.id===editing);document.getElementById("dialogTitle").textContent="Edit "+current.name+" link";urlInput.value=current.url;urlInput.setCustomValidity("")}
+document.getElementById("cancel").addEventListener("click",()=>dialog.close());
+document.getElementById("save").addEventListener("click",()=>{const value=safeUrl(urlInput.value.trim());if(!value){urlInput.setCustomValidity("Enter a valid URL beginning with https://");urlInput.reportValidity();return}urlInput.setCustomValidity("");const current=links.find(x=>x.id===editing);current.url=value;const saved={};links.forEach(x=>saved[x.id]=x.url);try{localStorage.setItem("mySocialHubLinks",JSON.stringify(saved))}catch(e){}dialog.close();render()});
+urlInput.addEventListener("input",()=>urlInput.setCustomValidity(""));
+render();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+</script>
+</body></html>
