@@ -135,13 +135,12 @@
     <div class="divider" aria-hidden="true">♡</div>
     <div class="section-title">MY SOCIALS</div>
     <section class="social-grid" id="mainGrid" aria-label="Main social links"></section>
-    <button class="edit-button" id="editButton" type="button">✦ Edit My Links</button>
 
     <dialog id="moreDialog">
       <h2>＋ More Links</h2>
       <p class="form-intro">Tap an account below to open it.</p>
       <div id="moreList" class="more-list"></div>
-      <p id="moreEmpty" class="empty-message" hidden>No extra links have been added yet. Tap “Edit My Links” to add them.</p>
+      <p id="moreEmpty" class="empty-message" hidden>No extra links are configured yet.</p>
       <div class="actions"><button class="secondary" id="closeMoreButton" type="button">Close</button></div>
     </dialog>
 
@@ -320,7 +319,6 @@
       formMessage.textContent = "";
       if (!dialog.open) dialog.showModal();
     }
-    document.getElementById("editButton").addEventListener("click", openEditor);
     document.getElementById("closeMoreButton").addEventListener("click", () => moreDialog.close());
     document.getElementById("cancelButton").addEventListener("click", () => dialog.close());
     document.getElementById("linksForm").addEventListener("submit", event => {

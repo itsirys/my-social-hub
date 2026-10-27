@@ -9,4 +9,4 @@ PUBLISH ON GITHUB (Android):
 4. Keep the exact filenames: index.html, social-hub-background.jpg, social-hub-profile.jpg, manifest.webmanifest, sw.js, icon-192.png, and icon-512.png.
 5. Commit changes, then open https://itsirys.github.io/my-social-hub/ and refresh.
 
-The app icons now use the profile photo. The page avatar also uses social-hub-profile.jpg. “Edit My Links” saves changes only in the browser/device where edited. The QR code points to the GitHub Pages address.
+The app icons use the profile photo, and the page avatar uses social-hub-profile.jpg. The public “Edit My Links” button has been removed. The QR code points to the GitHub Pages address. The service-worker cache version was updated so browsers can pick up the new files.
