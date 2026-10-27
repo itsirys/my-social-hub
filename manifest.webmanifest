@@ -1,14 +1,14 @@
 {
   "name": "My Social Hub",
   "short_name": "Social Hub",
-  "description": "Your social links in one little universe.",
+  "description": "All my socials in one place.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#100b16",
-  "theme_color": "#17101f",
+  "background_color": "#071329",
+  "theme_color": "#071329",
   "icons": [
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
