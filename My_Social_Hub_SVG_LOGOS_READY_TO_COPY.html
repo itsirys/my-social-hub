@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071329">
+  <meta name="description" content="My Social Hub — all my socials in one place.">
+  <title>My Social Hub 🦋</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <style>
+    :root {
+      --bg: #071329;
+      --panel: rgba(10, 25, 52, .84);
+      --panel-strong: rgba(8, 20, 43, .94);
+      --violet: #7770bd;
+      --purple: #a69bdb;
+      --moon: #d0d5ef;
+      --white: #f4f5fc;
+      --muted: #c1c8e2;
+      --line: rgba(177, 182, 238, .27);
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--white);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg); overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: -18px; z-index: -2;
+      background-image: url("social-hub-background.jpg");
+      background-position: center; background-size: cover; background-repeat: no-repeat;
+      filter: blur(5px); transform: scale(1.03);
+    }
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, rgba(3, 10, 27, .72), rgba(4, 12, 30, .88));
+      pointer-events: none;
+    }
+    .wrap { position: relative; width: min(100% - 28px, 540px); margin: auto; padding: 28px 0 36px; }
+    header { text-align: center; margin-bottom: 20px; }
+    .avatar {
+      width: 92px; height: 92px; display: grid; place-items: center; margin: 0 auto 12px;
+      border-radius: 50%; border: 1px solid rgba(195, 191, 255, .7);
+      background: linear-gradient(145deg, rgba(28, 54, 95, .95), rgba(45, 34, 82, .9));
+      box-shadow: 0 0 22px rgba(110, 103, 186, .24);
+      font-size: 48px;
+    }
+    h1 { margin: 6px 0; font-size: clamp(28px, 7vw, 38px); letter-spacing: .4px; }
+    .subtitle { margin: 7px 0 0; color: var(--moon); font-size: 14px; }
+    .motto { color: #d0c9f2; font-size: 11px; letter-spacing: 2px; margin-top: 12px; }
+    .divider { display: flex; align-items: center; gap: 12px; color: #d5c9f6; margin: 20px 0; }
+    .divider::before, .divider::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+    .section-title { font-size: 11px; letter-spacing: 1.8px; color: var(--moon); margin: 24px 0 12px; }
+    .social-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .social {
+      min-width: 0; min-height: 102px; padding: 13px 6px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px; text-align: center;
+      color: var(--white); text-decoration: none; border: 1px solid var(--line); border-radius: 16px;
+      background: rgba(9, 24, 50, .79); backdrop-filter: blur(9px);
+      box-shadow: 0 4px 14px rgba(0,0,0,.18); transition: transform .18s, border-color .18s;
+    }
+    .social:active { transform: scale(.97); }
+    .social-icon { font-size: 25px; line-height: 1.1; }
+    .social-name { font-size: 12px; font-weight: 650; overflow-wrap: anywhere; }
+    .social-note { color: #c4cbe5; font-size: 10px; margin-top: 3px; }
+    button, .button {
+      font: inherit; cursor: pointer; color: white; border: 1px solid rgba(182, 174, 255, .5);
+      border-radius: 13px; padding: 12px 15px; background: rgba(65, 66, 129, .85);
+    }
+    .edit-button { width: 100%; margin-top: 14px; background: rgba(15, 31, 62, .88); }
+    .qr-card { margin-top: 25px; padding: 18px; text-align: center; border: 1px solid var(--line);
+      border-radius: 20px; background: rgba(8, 21, 44, .86); backdrop-filter: blur(10px); }
+    .qr-card h2 { font-size: 17px; margin: 0 0 6px; }
+    .qr-card p { color: var(--muted); font-size: 12px; margin: 0 0 14px; }
+    .qr-image { display: block; width: 174px; height: 174px; margin: auto; padding: 8px;
+      background: white; border-radius: 12px; image-rendering: pixelated; }
+    .qr-caption { color: var(--muted); font-size: 11px; margin-top: 12px; }
+    .footer { text-align: center; color: var(--muted); font-size: 11px; margin-top: 22px; }
+    dialog { width: min(92%, 480px); max-height: 86vh; overflow-y: auto; color: var(--white);
+      background: #08152e; border: 1px solid #7d69ff70; border-radius: 20px; padding: 20px; }
+    dialog::backdrop { background: rgba(1, 5, 17, .82); }
+    dialog h2 { margin: 0 0 7px; }
+    .form-intro { color: var(--muted); font-size: 13px; }
+    .more-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+    .more-list .social { min-height: 88px; }
+    .empty-message { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 16px 0; }
+    .group-title { margin: 20px 0 8px; color: #d6d0f5; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+    .field { display: block; margin: 12px 0; }
+    .field span { display: block; font-size: 12px; margin-bottom: 6px; }
+    .field input { width: 100%; padding: 11px; border-radius: 10px; border: 1px solid #58658d;
+      color: white; background: #030b1f; font-size: 14px; }
+    .actions { display: flex; gap: 9px; margin-top: 18px; }
+    .actions button { flex: 1; }
+    .secondary { background: #14213d; box-shadow: none; }
+    .toast { min-height: 18px; color: #d7d1f8; font-size: 12px; margin-top: 10px; }
+    @media (max-width: 350px) { .social-grid { gap: 7px; } .social { min-height: 92px; } .social-name { font-size: 11px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* Updated visual style inspired by the requested reference design */
+    body::after { background: linear-gradient(120deg, rgba(5, 10, 30, .70), rgba(16, 19, 49, .60) 50%, rgba(5, 10, 30, .74)); }
+    .wrap { width: min(100% - 28px, 1120px); padding-top: 30px; }
+    .avatar { width: 136px; height: 136px; position: relative; overflow: visible; font-size: 0;
+      background: linear-gradient(rgba(17, 20, 48, .12), rgba(17, 20, 48, .12)), url("social-hub-background.jpg") center 25% / cover no-repeat;
+      border: 2px solid #a99dff; box-shadow: 0 0 24px rgba(121, 108, 255, .62); }
+    .avatar::after { content: "🦋"; position: absolute; right: -7px; bottom: 0; font-size: 36px; filter: drop-shadow(0 0 8px #877aff); }
+    h1 { font-size: clamp(30px, 5vw, 46px); text-shadow: 0 2px 14px #05091c; }
+    .subtitle { font-size: clamp(15px, 2.4vw, 21px); }
+    .motto { font-size: 12px; letter-spacing: 3px; }
+    .social-grid { gap: 12px; }
+    .social { min-height: 116px; padding: 14px 8px; border-radius: 20px; background: rgba(36, 43, 78, .64); backdrop-filter: blur(12px); box-shadow: 0 4px 18px rgba(0,0,0,.2); }
+    .social-icon { font-size: 34px; }
+    .social-icon svg { width: 34px; height: 34px; display: block; }
+    .social-name { font-size: 15px; }
+    .social-note { font-size: 11px; }
+    .qr-card { max-width: 360px; margin: 18px auto 0; padding: 16px; border: 0; background: transparent; }
+    .qr-card h2 { font-size: 18px; margin: 8px 0 4px; }
+    .qr-card p { font-size: 13px; }
+    .qr-image { width: 156px; height: 156px; border: 2px solid #b5a9ff; border-radius: 18px; box-shadow: 0 0 20px rgba(124,112,255,.4); }
+    @media (min-width: 700px) { .social-grid { gap: 14px; } .social { min-height: 124px; } }
+    @media (max-width: 420px) { .wrap { width: min(100% - 20px, 1120px); } .avatar { width: 112px; height: 112px; } .social-grid { gap: 8px; } .social { min-height: 100px; padding: 10px 4px; border-radius: 16px; } .social-icon { font-size: 29px; } .social-name { font-size: 12px; } }
+
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="avatar" role="img" aria-label="Profile photo with butterfly accent"></div>
+      <h1>My Social Hub</h1>
+      <div class="subtitle">All my socials in one place 🦋</div>
+      <div class="motto">SCAN · CONNECT · FOLLOW</div>
+    </header>
+    <div class="divider" aria-hidden="true">♡</div>
+    <div class="section-title">MY SOCIALS</div>
+    <section class="social-grid" id="mainGrid" aria-label="Main social links"></section>
+    <button class="edit-button" id="editButton" type="button">✦ Edit My Links</button>
+
+    <dialog id="moreDialog">
+      <h2>＋ More Links</h2>
+      <p class="form-intro">Tap an account below to open it.</p>
+      <div id="moreList" class="more-list"></div>
+      <p id="moreEmpty" class="empty-message" hidden>No extra links have been added yet. Tap “Edit My Links” to add them.</p>
+      <div class="actions"><button class="secondary" id="closeMoreButton" type="button">Close</button></div>
+    </dialog>
+
+    <section class="qr-card" aria-label="QR code">
+      <h2>My Social Hub QR</h2>
+      <p>Scan once to open all my social links.</p>
+      <img class="qr-image" id="qrImage" alt="QR code that opens My Social Hub">
+      <div class="qr-caption">Save or share this page to connect with me.</div>
+    </section>
+    <div class="footer">Made with 🦋 and a little midnight magic</div>
+  </main>
+
+  <dialog id="editDialog">
+    <h2>✦ Edit My Links</h2>
+    <p class="form-intro">Paste each profile URL or contact link below. Leave fields blank if you do not use them.</p>
+    <form id="linksForm">
+      <div id="linkFields"></div>
+      <div class="actions">
+        <button type="submit">Save Links</button>
+        <button class="secondary" id="cancelButton" type="button">Cancel</button>
+      </div>
+      <div class="toast" id="formMessage" aria-live="polite"></div>
+    </form>
+  </dialog>
+
+  <script>
+    const mainPlatforms = [
+      { id: "facebook", name: "Facebook", icon: "📘" },
+      { id: "instagram", name: "Instagram", icon: "📸" },
+      { id: "messenger", name: "Messenger", icon: "💬" },
+      { id: "threads", name: "Threads", icon: "🧵" },
+      { id: "tiktok", name: "TikTok", icon: "🎵" }
+    ];
+    const extraPlatforms = [
+      { id: "x", name: "X (Twitter)", icon: "𝕏", group: "Social media" },
+      { id: "threadsOther", name: "Threads — other profile", icon: "🧵", group: "Social media" },
+      { id: "tiktokBusiness", name: "TikTok Business", icon: "🎵", group: "Social media" },
+      { id: "youtube", name: "YouTube", icon: "▶️", group: "Social media" },
+      { id: "facebookPage", name: "Facebook Page", icon: "📘", group: "Social media" },
+      { id: "messengerChannel", name: "Facebook Messenger Channel", icon: "💬", group: "Social media" },
+      { id: "whatsappMain", name: "WhatsApp Main", icon: "🟢", group: "Messaging & contact" },
+      { id: "whatsappBusiness", name: "WhatsApp Business", icon: "🟢", group: "Messaging & contact" },
+      { id: "viber", name: "Viber", icon: "📞", group: "Messaging & contact" },
+      { id: "businessGmail", name: "Business Gmail", icon: "✉️", group: "Business & contact" },
+      { id: "email", name: "Email address", icon: "📧", group: "Business & contact" },
+      { id: "businessPage", name: "Business page / online shop", icon: "🛍️", group: "Business & contact" },
+      { id: "other", name: "Other profile or link", icon: "🔗", group: "Business & contact" }
+    ];
+    const allPlatforms = [...mainPlatforms, ...extraPlatforms];
+    const storageKey = "mySocialHubLinksV3";
+    const mainGrid = document.getElementById("mainGrid");
+    const dialog = document.getElementById("editDialog");
+    const moreDialog = document.getElementById("moreDialog");
+    const moreList = document.getElementById("moreList");
+    const moreEmpty = document.getElementById("moreEmpty");
+    const fields = document.getElementById("linkFields");
+    const formMessage = document.getElementById("formMessage");
+    const hubUrl = "https://itsirys.github.io/my-social-hub/";
+
+    function validUrl(value, platformId = "") {
+      try {
+        const url = new URL(value);
+        if (url.protocol === "https:" || url.protocol === "http:" || url.protocol === "mailto:") return true;
+        return platformId === "viber" && url.protocol === "viber:" && url.hostname === "chat";
+      } catch { return false; }
+    }
+    function loadLinks() {
+      try {
+        let saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+        if (!saved) {
+          saved = JSON.parse(localStorage.getItem("mySocialHubLinksV2") || "{}");
+          if (saved && Object.keys(saved).length) localStorage.setItem(storageKey, JSON.stringify(saved));
+        }
+        return Object.fromEntries(allPlatforms.map(p => [p.id, typeof saved?.[p.id] === "string" ? saved[p.id] : ""]));
+      } catch { return Object.fromEntries(allPlatforms.map(p => [p.id, ""])); }
+    }
+    let links = loadLinks();
+
+    // Public defaults are embedded in the page so visitors on other phones can use them.
+    const defaultLinks = {
+      facebook: "https://www.facebook.com/share/1LQnrmYHEX/",
+      instagram: "https://www.instagram.com/imalditha21/",
+      messenger: "https://m.me/Imalditha89",
+      threads: "https://www.threads.com/@imalditha21",
+      tiktok: "https://www.tiktok.com/@itsirys.21",
+      x: "https://x.com/itsirys",
+      threadsOther: "https://www.threads.com/@spawttedpetsupplies21",
+      tiktokBusiness: "https://www.tiktok.com/@spawttedpetsupplies",
+      facebookPage: "https://www.facebook.com/share/18ZgGW7NSF/",
+      messengerChannel: "https://m.me/108490980625671",
+      whatsappMain: "https://wa.me/qr/60LCJM7SWIGYD1",
+      whatsappBusiness: "https://wa.me/639171486131",
+      viber: "viber://chat?number=%2B639218434655",
+      businessGmail: "spawttedpetsupplies@gmail.com",
+      email: "erizalynj@gmail.com",
+      businessPage: "https://grab.onelink.me/2695613898?pid=inappsharing&c=2-C6JDJJJTKFAUAE&is_retargeting=true&af_dp=grab%3A%2F%2Fopen%3FscreenType%3DGRABMART%26sourceID%3DA4pcqCZkS4%26merchantIDs%3D2-C6JDJJJTKFAUAE&af_force_deeplink=true&af_web_dp=https%3A%2F%2Fwww.grab.com%2Fdownload"
+    };
+    // Keep saved non-empty edits, but fill blank/missing values from the public defaults.
+    links = Object.fromEntries(allPlatforms.map(p => [
+      p.id,
+      typeof links[p.id] === "string" && links[p.id].trim() ? links[p.id] : (defaultLinks[p.id] || "")
+    ]));
+
+    function normalizedUrl(p, value) {
+      const trimmed = (value || "").trim();
+      if (!trimmed) return "";
+      if ((p.id === "email" || p.id === "businessGmail") && !trimmed.includes(":") && trimmed.includes("@")) return "mailto:" + trimmed;
+      return trimmed;
+    }
+    const logos = {
+      facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12a12 12 0 1 0-13.875 11.85v-8.38H7.078V12h3.047V9.356c0-3.007 1.792-4.669 4.533-4.669 1.313 0 2.686.235 2.686.235v2.953h-1.513c-1.49 0-1.955.925-1.955 1.874V12h3.328l-.532 3.47h-2.796v8.38A12.003 12.003 0 0 0 24 12Z"/></svg>',
+      instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradient" x1="0" y1="24" x2="24" y2="0"><stop stop-color="#FFB13D"/><stop offset=".48" stop-color="#E1306C"/><stop offset="1" stop-color="#833AB4"/></linearGradient></defs><rect x="2.2" y="2.2" width="19.6" height="19.6" rx="5.8" fill="none" stroke="url(#igGradient)" stroke-width="2.4"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="#E9DDFE" stroke-width="2"/><circle cx="18" cy="6.4" r="1.35" fill="#F5B5DB"/></svg>',
+      messenger: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#168AFF" d="M12 1.5C5.93 1.5 1 6.08 1 11.73c0 3.22 1.59 6.08 4.08 7.94V23l3.72-2.04c1.01.28 2.09.43 3.2.43 6.07 0 11-4.58 11-10.23S18.07 1.5 12 1.5Z"/><path fill="#fff" d="m5.8 14.7 4.7-5 2.55 2.45 5.15-2.45-4.7 5-2.55-2.45z"/></svg>',
+      threads: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.1 1.1c-5.7 0-9.4 4.1-9.4 10.6 0 6.8 3.6 11.2 9.3 11.2 5 0 8.2-3 8.2-7.3 0-3.3-1.8-5.5-5.1-6.2-.5-2.2-1.8-3.3-3.9-3.3-2.2 0-3.8 1.3-4.3 3.3l2.2.6c.3-1.1 1-1.7 2.1-1.7 1 0 1.7.4 2 1.4-.5 0-1-.1-1.5-.1-3.5 0-5.7 1.8-5.7 4.7 0 2.6 1.9 4.4 4.7 4.4 2.8 0 4.8-1.7 5-4.9 1.5.7 2.2 1.9 2.2 3.7 0 3-2.2 5.1-6 5.1-4.3 0-7-3.6-7-9.5 0-5.2 2.7-8.5 7.2-8.5 3.3 0 5.5 1.7 6.3 4.7l2.2-.6C17.4 3.6 15.1 1.1 12.1 1.1Zm-.5 15.3c-1.5 0-2.4-.8-2.4-2.1 0-1.5 1.1-2.4 3.3-2.4.6 0 1.2.1 1.8.2-.1 2.9-1 4.3-2.7 4.3Z"/></svg>',
+      tiktok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#25F4EE" d="M15.8 1h3.3c.2 2.1 1.4 4 3.4 4.8v3.4a10.2 10.2 0 0 1-3.4-1.1v7.1a7.1 7.1 0 1 1-7.1-7.1c.5 0 1 .1 1.5.2v3.6a3.7 3.7 0 1 0 2.3 3.4z"/><path fill="#FE2C55" d="M14.1 2.3h3.2c.2 2.1 1.4 4 3.4 4.8v3.4a10.2 10.2 0 0 1-3.4-1.1v7.1a7.1 7.1 0 0 1-7.1 7.1 7 7 0 0 1-4.8-1.9 7.1 7.1 0 0 0 10.4-6.3V8.3a10.2 10.2 0 0 0 3.4 1.1V6c-2-.8-3.2-2.7-3.4-4.8h-1.7Z"/><path fill="#fff" d="M16.7 1h2.4c.2 2.1 1.4 4 3.4 4.8v3.4a10.2 10.2 0 0 1-3.4-1.1v7.1a7.1 7.1 0 1 1-7.1-7.1c.5 0 1 .1 1.5.2v3.6a3.7 3.7 0 1 0 2.3 3.4z"/></svg>'
+    };
+
+    function makeCard(p, isMore = false) {
+      const url = normalizedUrl(p, links[p.id] || defaultLinks[p.id] || "");
+      const a = document.createElement("a");
+      a.className = "social";
+      a.href = validUrl(url, p.id) ? url : "#";
+      a.setAttribute("aria-label", p.name);
+      const icon = document.createElement("span"); icon.className = "social-icon"; icon.innerHTML = logos[p.id] || p.icon;
+      const name = document.createElement("span"); name.className = "social-name"; name.textContent = p.name;
+      const note = document.createElement("span"); note.className = "social-note";
+      note.textContent = validUrl(url, p.id) ? "Open ↗" : "Add link";
+      a.append(icon, name, note);
+      a.addEventListener("click", event => {
+        if (!validUrl(url, p.id)) { event.preventDefault(); openEditor(); }
+        else { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+      });
+      return a;
+    }
+    function renderMain() {
+      mainGrid.replaceChildren();
+      mainPlatforms.forEach(p => mainGrid.append(makeCard(p)));
+      const more = document.createElement("button");
+      more.className = "social";
+      more.type = "button";
+      more.innerHTML = '<span class="social-icon">＋</span><span class="social-name">More Links</span><span class="social-note">All other accounts</span>';
+      more.addEventListener("click", openMoreLinks);
+      mainGrid.append(more);
+    }
+    function openMoreLinks() {
+      moreList.replaceChildren();
+      const filled = extraPlatforms.filter(p => {
+        const value = links[p.id] || defaultLinks[p.id] || "";
+        return value.trim() && validUrl(normalizedUrl(p, value), p.id);
+      });
+      filled.forEach(p => moreList.append(makeCard(p, true)));
+      moreEmpty.hidden = filled.length > 0;
+      if (!moreDialog.open) moreDialog.showModal();
+    }
+    function openEditor() {
+      fields.replaceChildren();
+      let lastGroup = "";
+      allPlatforms.forEach(p => {
+        if (p.group && p.group !== lastGroup) {
+          const heading = document.createElement("div");
+          heading.className = "group-title"; heading.textContent = p.group;
+          fields.append(heading); lastGroup = p.group;
+        } else if (!p.group && lastGroup !== "Main social links") {
+          const heading = document.createElement("div");
+          heading.className = "group-title"; heading.textContent = "Main social links";
+          fields.append(heading); lastGroup = "Main social links";
+        }
+        const label = document.createElement("label"); label.className = "field";
+        const title = document.createElement("span"); title.textContent = `${p.icon} ${p.name}`;
+        const input = document.createElement("input");
+        input.type = p.id === "email" || p.id === "businessGmail" ? "text" : "url";
+        input.inputMode = "url"; input.placeholder = p.id.startsWith("whatsapp") ? "https://wa.me/63..." : (p.id === "email" || p.id === "businessGmail" ? "name@example.com" : "https://...");
+        input.value = links[p.id] || ""; input.name = p.id; input.setAttribute("aria-label", p.name);
+        label.append(title, input); fields.append(label);
+      });
+      formMessage.textContent = "";
+      if (!dialog.open) dialog.showModal();
+    }
+    document.getElementById("editButton").addEventListener("click", openEditor);
+    document.getElementById("closeMoreButton").addEventListener("click", () => moreDialog.close());
+    document.getElementById("cancelButton").addEventListener("click", () => dialog.close());
+    document.getElementById("linksForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const updated = {};
+      for (const p of allPlatforms) {
+        const value = String(data.get(p.id) || "").trim();
+        if (value && p.id !== "email" && p.id !== "businessGmail" && !validUrl(value, p.id)) {
+          formMessage.textContent = `Please enter a full http:// or https:// link for ${p.name}.`;
+          return;
+        }
+        updated[p.id] = value || defaultLinks[p.id] || "";
+      }
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+        links = updated; renderMain(); dialog.close();
+        alert("Links saved on this device/browser.");
+      } catch { formMessage.textContent = "Could not save links in this browser. Try a regular browser tab."; }
+    });
+    document.getElementById("qrImage").src =
+      "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=" + encodeURIComponent(hubUrl);
+    renderMain();
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+  </script>
+</body>
+</html>
