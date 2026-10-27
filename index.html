@@ -85,7 +85,11 @@
       box-shadow: 0 4px 14px rgba(0,0,0,.18); transition: transform .18s, border-color .18s;
     }
     .social:active { transform: scale(.97); }
-    .social-icon { font-size: 25px; line-height: 1.1; }
+    .social-icon { font-size: 25px; line-height: 1.1; } .social-icon svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+    }
     .social-name { font-size: 12px; font-weight: 650; overflow-wrap: anywhere; }
     .social-note { color: #c4cbe5; font-size: 10px; margin-top: 3px; }
     button, .button {
@@ -193,10 +197,10 @@
   <script>
     const mainPlatforms = [
   { id: "facebook", name: "Facebook", icon: "facebook" },
-  { id: "instagram", name: "Instagram", icon: "instagram" },
-  { id: "messenger", name: "Messenger", icon: "messenger" },
-  { id: "threads", name: "Threads", icon: "threads" },
-  { id: "tiktok", name: "TikTok", icon: "tiktok" }
+{ id: "instagram", name: "Instagram", icon: "instagram" },
+{ id: "messenger", name: "Messenger", icon: "messenger" },
+{ id: "threads", name: "Threads", icon: "threads" },
+{ id: "tiktok", name: "TikTok", icon: "tiktok" }
 ];
     const extraPlatforms = [
       { id: "x", name: "X (Twitter)", icon: "𝕏", group: "Social media" },
