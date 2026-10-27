@@ -300,11 +300,10 @@ function makeCard(p, isMore = false) {
     }
   });
 
-  return a;
+    return a;
 }
 
-    }
-    function renderMain() {
+function renderMain() {
       mainGrid.replaceChildren();
       mainPlatforms.forEach(p => mainGrid.append(makeCard(p)));
       const more = document.createElement("button");
