@@ -97,12 +97,35 @@
     .toast { min-height: 18px; color: #d7d1f8; font-size: 12px; margin-top: 10px; }
     @media (max-width: 350px) { .social-grid { gap: 7px; } .social { min-height: 92px; } .social-name { font-size: 11px; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* Updated visual style inspired by the requested reference design */
+    body::after { background: linear-gradient(120deg, rgba(5, 10, 30, .70), rgba(16, 19, 49, .60) 50%, rgba(5, 10, 30, .74)); }
+    .wrap { width: min(100% - 28px, 1120px); padding-top: 30px; }
+    .avatar { width: 136px; height: 136px; position: relative; overflow: visible; font-size: 0;
+      background: linear-gradient(rgba(17, 20, 48, .12), rgba(17, 20, 48, .12)), url("social-hub-background.jpg") center 25% / cover no-repeat;
+      border: 2px solid #a99dff; box-shadow: 0 0 24px rgba(121, 108, 255, .62); }
+    .avatar::after { content: "🦋"; position: absolute; right: -7px; bottom: 0; font-size: 36px; filter: drop-shadow(0 0 8px #877aff); }
+    h1 { font-size: clamp(30px, 5vw, 46px); text-shadow: 0 2px 14px #05091c; }
+    .subtitle { font-size: clamp(15px, 2.4vw, 21px); }
+    .motto { font-size: 12px; letter-spacing: 3px; }
+    .social-grid { gap: 12px; }
+    .social { min-height: 116px; padding: 14px 8px; border-radius: 20px; background: rgba(36, 43, 78, .64); backdrop-filter: blur(12px); box-shadow: 0 4px 18px rgba(0,0,0,.2); }
+    .social-icon { font-size: 34px; }
+    .social-name { font-size: 15px; }
+    .social-note { font-size: 11px; }
+    .qr-card { max-width: 360px; margin: 18px auto 0; padding: 16px; border: 0; background: transparent; }
+    .qr-card h2 { font-size: 18px; margin: 8px 0 4px; }
+    .qr-card p { font-size: 13px; }
+    .qr-image { width: 156px; height: 156px; border: 2px solid #b5a9ff; border-radius: 18px; box-shadow: 0 0 20px rgba(124,112,255,.4); }
+    @media (min-width: 700px) { .social-grid { gap: 14px; } .social { min-height: 124px; } }
+    @media (max-width: 420px) { .wrap { width: min(100% - 20px, 1120px); } .avatar { width: 112px; height: 112px; } .social-grid { gap: 8px; } .social { min-height: 100px; padding: 10px 4px; border-radius: 16px; } .social-icon { font-size: 29px; } .social-name { font-size: 12px; } }
+
   </style>
 </head>
 <body>
   <main class="wrap">
     <header>
-      <div class="avatar" aria-label="Butterfly logo">🦋</div>
+      <div class="avatar" role="img" aria-label="Profile photo with butterfly accent"></div>
       <h1>My Social Hub</h1>
       <div class="subtitle">All my socials in one place 🦋</div>
       <div class="motto">SCAN · CONNECT · FOLLOW</div>
@@ -185,8 +208,12 @@
     }
     function loadLinks() {
       try {
-        const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
-        return Object.fromEntries(allPlatforms.map(p => [p.id, typeof saved[p.id] === "string" ? saved[p.id] : ""]));
+        let saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+        if (!saved) {
+          saved = JSON.parse(localStorage.getItem("mySocialHubLinksV2") || "{}");
+          if (saved && Object.keys(saved).length) localStorage.setItem(storageKey, JSON.stringify(saved));
+        }
+        return Object.fromEntries(allPlatforms.map(p => [p.id, typeof saved?.[p.id] === "string" ? saved[p.id] : ""]));
       } catch { return Object.fromEntries(allPlatforms.map(p => [p.id, ""])); }
     }
     let links = loadLinks();
